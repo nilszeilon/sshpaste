@@ -1,4 +1,8 @@
 
+
+https://github.com/user-attachments/assets/286c51c8-bf37-421d-b8f3-53464a15b87a
+
+
 # sshpaste
 
 SSH wrapper that auto-uploads dragged files.
