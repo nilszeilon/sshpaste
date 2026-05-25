@@ -169,6 +169,24 @@ func equal(a, b []byte) bool {
 	return true
 }
 
+func shouldUpload(path string) bool {
+	ext := strings.ToLower(filepath.Ext(path))
+	if ext == "" {
+		return false
+	}
+	switch ext {
+	case ".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp", ".tiff", ".svg",
+		".mp4", ".mov", ".avi", ".mkv", ".webm", ".mp3", ".wav", ".flac",
+		".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx",
+		".zip", ".tar", ".gz", ".tgz", ".bz2", ".xz", ".7z", ".rar",
+		".txt", ".md", ".log", ".csv", ".json", ".xml", ".yaml", ".yml",
+		".html", ".css", ".js", ".ts", ".go", ".py", ".rs", ".java",
+		".c", ".h", ".cpp", ".hpp":
+		return true
+	}
+	return false
+}
+
 func scanAndReplace(line []byte, host string) []byte {
 	s := string(line)
 	var result strings.Builder
@@ -211,7 +229,7 @@ func scanAndReplace(line []byte, host string) []byte {
 			}
 		}
 
-		if info, err := os.Stat(resolved); err == nil && !info.IsDir() && len(resolved) > 1 {
+		if info, err := os.Stat(resolved); err == nil && !info.IsDir() && len(resolved) > 1 && shouldUpload(resolved) {
 			if remotePath := uploadFile(resolved, host); remotePath != "" {
 				result.WriteString(remotePath)
 			} else {
